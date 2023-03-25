@@ -14,7 +14,7 @@ _setMarker() {
 }
 
 class MapsScreen extends StatefulWidget {
-  MapsScreen({super.key});
+  const MapsScreen({super.key});
 
   @override
   State<MapsScreen> createState() => _MapsScreenState();
@@ -34,29 +34,29 @@ class _MapsScreenState extends State<MapsScreen> {
   Future<void> getCurrentLocation() async {
     Location location = Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         return;
       }
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
 
-    _locationData = await location.getLocation();
+    locationData = await location.getLocation();
 
-    _latLng = LatLng(_locationData.latitude!, _locationData.longitude!);
+    _latLng = LatLng(locationData.latitude!, locationData.longitude!);
     _kGooglePlex = CameraPosition(target: _latLng!, zoom: 14.4746);
     setState(() {});
   }

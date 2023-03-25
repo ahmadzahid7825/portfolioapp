@@ -35,10 +35,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ScaffoldGlobalBottomNavigation(
-      listOfChild: [
-        const HomePage(),
-        const Services(),
-        const Partners(),
+      listOfChild: const [
+        HomePage(),
+        Services(),
+        Partners(),
         MapsScreen(),
       ],
       listOfBottomNavigationItem: buildBottomNavigationItemList(),

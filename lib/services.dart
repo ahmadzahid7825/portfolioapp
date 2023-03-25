@@ -28,7 +28,7 @@ class Services extends StatelessWidget {
                 Column(
                   children: [
                     Bounceable(
-                      duration: Duration(milliseconds: 3000),
+                      duration: const Duration(milliseconds: 3000),
                       onTap: () {},
                       child: Container(
                         height: 150,
