@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolioapp/questions.dart';
+
+import 'bottombar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,6 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: null,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -14,8 +18,12 @@ class HomePage extends StatelessWidget {
             Image.asset('assets/images/splashlogo.png'),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Questions()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyBottomNavigationBar(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(35, 15, 35, 15),
@@ -24,9 +32,14 @@ class HomePage extends StatelessWidget {
                 ),
                 backgroundColor: Colors.black87,
               ),
-              child: const Text(
+              child: Text(
                 'COMMENCER',
-                style: TextStyle(fontSize: 15, letterSpacing: .5),
+                style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: .5),
+                ),
               ),
             )
           ],

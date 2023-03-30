@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:open_whatsapp/open_whatsapp.dart';
 
 _setMarker() {
   return const Marker(
@@ -21,7 +22,10 @@ class MapsScreen extends StatefulWidget {
 }
 
 class _MapsScreenState extends State<MapsScreen> {
-  final Uri whatsappNumber = Uri.parse('https://wa.me/1215898380');
+  // final Uri whatsappNumber = Uri.parse('https://wa.me/41792137813');
+  final Uri whatsappNumber =
+      Uri.parse('https://wa.me/41792137813?text=Hello%20there!');
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   LatLng? _latLng;
@@ -58,7 +62,7 @@ class _MapsScreenState extends State<MapsScreen> {
 
     _latLng = LatLng(locationData.latitude!, locationData.longitude!);
     _kGooglePlex = CameraPosition(target: _latLng!, zoom: 14.4746);
-    setState(() {});
+    // setState(() {});
   }
 
   @override
@@ -70,36 +74,87 @@ class _MapsScreenState extends State<MapsScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Stack(
+        home: Scaffold(
+      body: SafeArea(
+        child: Stack(
           children: [
             GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: _kGooglePlex,
               markers: <Marker>{_setMarker()},
-              myLocationButtonEnabled: true,
+              myLocationButtonEnabled: false,
               myLocationEnabled: true,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
             ),
             Positioned(
+              top: 10,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  size: 30,
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 30,
+              left: 0,
+              right: 0,
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 30,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.white,
+                  ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Zurich, Switzerland',
+                      contentPadding: const EdgeInsets.all(0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onSubmitted: (value) {
+                      // Handle search here
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 0,
               width: MediaQuery.of(context).size.width,
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 30),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(7)),
+                    borderRadius: BorderRadius.circular(14)),
                 child: Center(
                   child: Column(
                     children: [
                       const Text(
                         textAlign: TextAlign.center,
-                        'JE SUIS EN PANNE CONTACTER MON ASSISTANT DÉPANNAGE VIA',
+                        'JE SUIS EN PANNE CONTACTER MON \n ASSISTANT DÉPANNAGE VIA',
                         style: TextStyle(
+                            wordSpacing: 2,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             letterSpacing: .6,
@@ -108,49 +163,55 @@ class _MapsScreenState extends State<MapsScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              launchUrl(whatsappNumber);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding:
-                                  const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                              textStyle: const TextStyle(fontSize: 17),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 6),
+                                textStyle: const TextStyle(fontSize: 17),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                elevation: 5,
                               ),
-                              elevation: 5,
-                            ),
-                            child: const Text(
-                              'MA POSITION',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              padding:
-                                  const EdgeInsets.fromLTRB(35, 10, 35, 10),
-                              textStyle: const TextStyle(fontSize: 17),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                              child: const Text(
+                                'MA POSITION',
+                                style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              elevation: 5,
                             ),
-                            child: const Text(
-                              'APPELLER',
-                              style: TextStyle(fontWeight: FontWeight.w500),
+                            const SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ],
+                            ElevatedButton(
+                              onPressed: () {
+                                // launchUrl(whatsappNumber).toString();
+                                FlutterOpenWhatsapp.sendSingleMessage(
+                                    "41792137813", "Hello there!");
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 9),
+                                textStyle: const TextStyle(fontSize: 17),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                elevation: 5,
+                              ),
+                              child: const Text(
+                                'APPELLER',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -160,6 +221,6 @@ class _MapsScreenState extends State<MapsScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
