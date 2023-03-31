@@ -26,51 +26,95 @@ class Partners extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.transparent,
           ),
-          body: Column(
-            children: [
-              Bounceable(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: const Image(
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/images/part1.png',
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Bounceable(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: const Image(
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'assets/images/sp3.png',
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Bounceable(
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: const Image(
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/images/part1.png',
+                Bounceable(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: const Image(
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'assets/images/sp4.png',
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Bounceable(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: const Image(
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'assets/images/sp1.png',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Bounceable(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: const Image(
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            'assets/images/sp2.png',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )),
     );
   }
