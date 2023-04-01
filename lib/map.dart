@@ -6,6 +6,19 @@ import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:open_whatsapp/open_whatsapp.dart';
 
+String phone = '+441792137813';
+
+void launchCall() async {
+  String url = "tel:$phone";
+  if (await launchUrl(
+    Uri.parse(url),
+  )) {
+    await launchUrl(Uri.parse(url));
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 _setMarker() {
   return const Marker(
     markerId: MarkerId('marker_1'),
@@ -22,7 +35,6 @@ class MapsScreen extends StatefulWidget {
 }
 
 class _MapsScreenState extends State<MapsScreen> {
-  // final Uri whatsappNumber = Uri.parse('https://wa.me/41792137813');
   final Uri whatsappNumber =
       Uri.parse('https://wa.me/41792137813?text=Hello%20there!');
 
@@ -170,7 +182,10 @@ class _MapsScreenState extends State<MapsScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                FlutterOpenWhatsapp.sendSingleMessage(
+                                    "41792137813", "Hello there!");
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                                 padding: const EdgeInsets.symmetric(
@@ -191,9 +206,7 @@ class _MapsScreenState extends State<MapsScreen> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                // launchUrl(whatsappNumber).toString();
-                                FlutterOpenWhatsapp.sendSingleMessage(
-                                    "41792137813", "Hello there!");
+                                launchCall();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
