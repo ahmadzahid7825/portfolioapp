@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolioapp/bottombar.dart';
 import 'map.dart';
 import 'package:http/http.dart' as http;
 
 class Questions extends StatefulWidget {
-  const Questions({super.key});
+  Questions({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -20,7 +21,40 @@ class _QuestionsState extends State<Questions> {
   final TextEditingController _textController1 = TextEditingController();
   final TextEditingController _textController2 = TextEditingController();
 
-  
+  Future<void> sendDatatoUrl() async {
+    final response = await http.get(
+      Uri.parse(
+          'http://prestige-car-assistance.ch/wp-json/myplugin/v1/save_form?name=$_textController1&phone=$_textController2&service=$_checkBoxValue1$_checkBoxValue2$_checkBoxValue3$_checkBoxValue4'),
+    );
+
+    if (response.statusCode == 200) {
+      print('Data saved successfully!');
+    } else {
+      print('Failed to save data. Error code: ${response.statusCode}');
+    }
+  }
+
+  void _submit() {
+    String textValue1 = _textController1.text;
+    String textValue2 = _textController2.text;
+    List<String> selectedCheckboxes = [];
+    if (_checkBoxValue1) selectedCheckboxes.add("Assurance Auto");
+    if (_checkBoxValue2) selectedCheckboxes.add("Europe Assistance");
+    if (_checkBoxValue3) selectedCheckboxes.add("Mobile24");
+    if (_checkBoxValue4) selectedCheckboxes.add("Autres assurances");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        // builder: (context) => MyBottomNavigationBar(),
+        builder: (context) => MapsScreen(
+          selectedCheckboxes: selectedCheckboxes,
+          textValue1: textValue1,
+          textValue2: textValue2,
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _textController1.dispose();
@@ -165,10 +199,8 @@ class _QuestionsState extends State<Questions> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MapsScreen()));
+                            sendDatatoUrl();
+                            _submit();
                           },
                           style: ButtonStyle(
                             backgroundColor:

@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:open_whatsapp/open_whatsapp.dart';
+import 'package:search_map_place_updated/search_map_place_updated.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String phone = '+441792137813';
 
@@ -28,16 +28,21 @@ _setMarker() {
 }
 
 class MapsScreen extends StatefulWidget {
-  const MapsScreen({super.key});
+  MapsScreen({
+    super.key,
+    required this.textValue1,
+    required this.textValue2,
+    required this.selectedCheckboxes,
+  });
+  final String textValue1;
+  final String textValue2;
+  final List<String> selectedCheckboxes;
 
   @override
   State<MapsScreen> createState() => _MapsScreenState();
 }
 
 class _MapsScreenState extends State<MapsScreen> {
-  final Uri whatsappNumber =
-      Uri.parse('https://wa.me/41792137813?text=Hello%20there!');
-
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   LatLng? _latLng;
@@ -46,15 +51,19 @@ class _MapsScreenState extends State<MapsScreen> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+  late GoogleMapController mapController;
+  LocationData? currentLocation;
 
-  Future<void> getCurrentLocation() async {
+  @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
+
+  void _getLocation() async {
     Location location = Location();
 
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    serviceEnabled = await location.serviceEnabled();
+    bool serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
@@ -62,25 +71,45 @@ class _MapsScreenState extends State<MapsScreen> {
       }
     }
 
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
+    PermissionStatus permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+      if (permissionStatus != PermissionStatus.granted) {
         return;
       }
     }
 
-    locationData = await location.getLocation();
-
-    _latLng = LatLng(locationData.latitude!, locationData.longitude!);
-    _kGooglePlex = CameraPosition(target: _latLng!, zoom: 14.4746);
-    // setState(() {});
+    currentLocation = await location.getLocation();
+    if (mapController != null && currentLocation != null) {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(
+              currentLocation!.latitude!,
+              currentLocation!.longitude!,
+            ),
+            zoom: 15,
+          ),
+        ),
+      );
+      latitude = currentLocation!.latitude;
+      longitude = currentLocation!.longitude;
+    }
+    uris =
+        "https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}";
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getCurrentLocation();
+  double? latitude;
+  double? longitude;
+
+  String? uris;
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -91,14 +120,21 @@ class _MapsScreenState extends State<MapsScreen> {
         child: Stack(
           children: [
             GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: _kGooglePlex,
               markers: <Marker>{_setMarker()},
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
+              onMapCreated: (GoogleMapController googleMapController) {
+                setState(() {
+                  mapController = googleMapController;
+                });
+                _getLocation();
               },
+              initialCameraPosition: CameraPosition(
+                target: currentLocation != null
+                    ? LatLng(
+                        currentLocation!.latitude!, currentLocation!.longitude!)
+                    : const LatLng(3.583598, 22.424761),
+                zoom: 15,
+              ),
+              mapType: MapType.normal,
             ),
             Positioned(
               top: 10,
@@ -127,23 +163,26 @@ class _MapsScreenState extends State<MapsScreen> {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(5),
                     color: Colors.white,
+                    border: Border.all(color: Colors.black87, width: 1),
                   ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Zurich, Switzerland',
-                      contentPadding: const EdgeInsets.all(0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
-                    ),
-                    onSubmitted: (value) {
-                      // Handle search here
+                  child: SearchMapPlaceWidget(
+                    hasClearButton: true,
+                    bgColor: Colors.white,
+                    placeType: PlaceType.address,
+                    placeholder: 'Zurich, Switzerland',
+                    iconColor: Colors.white,
+                    textColor: Colors.black87,
+                    apiKey: 'AIzaSyCwEZ2KJzmalXBgYwRdiihLgKbtbU--FwM',
+                    onSelected: (Place place) async {
+                      Geolocation? geolocation = await place.geolocation;
+                      mapController.animateCamera(
+                        CameraUpdate.newLatLng(geolocation?.coordinates!),
+                      );
+                      mapController.animateCamera(
+                        CameraUpdate.newLatLngBounds(geolocation?.bounds!, 0),
+                      );
                     },
                   ),
                 ),
@@ -182,9 +221,20 @@ class _MapsScreenState extends State<MapsScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                              onPressed: () {
-                                FlutterOpenWhatsapp.sendSingleMessage(
-                                    "41792137813", "Hello there!");
+                              onPressed: () async {
+                                const String phoneNumber = '41792137813';
+                                String msgDetails =
+                                    "J'ai besoin d'assistance \nNom : ${widget.textValue1} \nTéléphone : ${widget.textValue2} \nAssurance : ${widget.selectedCheckboxes}";
+                                String message =
+                                    '$msgDetails \n https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}';
+                                final Uri url = Uri.parse(
+                                    'whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(message)}');
+
+                                if (currentLocation != null) {
+                                  if (!await launchUrl(url)) {
+                                    throw Exception('Could not launch $url');
+                                  }
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
