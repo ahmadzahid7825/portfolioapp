@@ -215,7 +215,7 @@ class _QuestionsState extends State<Questions> {
                             ),
                           ),
                           child: Text(
-                            'NEXT',
+                            'Suivant',
                             style: GoogleFonts.roboto(
                               textStyle: const TextStyle(
                                 fontSize: 15,

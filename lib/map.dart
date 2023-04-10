@@ -223,8 +223,10 @@ class _MapsScreenState extends State<MapsScreen> {
                             ElevatedButton(
                               onPressed: () async {
                                 const String phoneNumber = '41792137813';
+                                String selectedCheckboxesString =
+                                    '"${widget.selectedCheckboxes.join('", "')}"';
                                 String msgDetails =
-                                    "J'ai besoin d'assistance \nNom : ${widget.textValue1} \nTéléphone : ${widget.textValue2} \nAssurance : ${widget.selectedCheckboxes}";
+                                    "J'ai besoin d'assistance \nNom : ${widget.textValue1} \nTéléphone : ${widget.textValue2} \nAssurance : $selectedCheckboxesString";
                                 String message =
                                     '$msgDetails \n https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}';
                                 final Uri url = Uri.parse(
