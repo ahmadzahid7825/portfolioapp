@@ -134,7 +134,7 @@ class _QuestionsState extends State<Questions> {
                         ),
                         CheckboxListTile(
                           title: const Text(
-                            'Assurance Auto',
+                            'Allianz Assistance',
                             style: TextStyle(letterSpacing: .8),
                           ),
                           controlAffinity: ListTileControlAffinity.leading,
@@ -166,7 +166,7 @@ class _QuestionsState extends State<Questions> {
                         ),
                         CheckboxListTile(
                           title: const Text(
-                            'Mobile24',
+                            'Mobi24',
                             style: TextStyle(letterSpacing: .8),
                           ),
                           controlAffinity: ListTileControlAffinity.leading,
@@ -182,7 +182,7 @@ class _QuestionsState extends State<Questions> {
                         ),
                         CheckboxListTile(
                           title: const Text(
-                            'Autres assurances',
+                            'Autres assurances',
                             style: TextStyle(letterSpacing: .8),
                           ),
                           controlAffinity: ListTileControlAffinity.leading,
