@@ -20,11 +20,15 @@ class _QuestionsState extends State<Questions> {
 
   final TextEditingController _textController1 = TextEditingController();
   final TextEditingController _textController2 = TextEditingController();
+  final TextEditingController _textController3 = TextEditingController();
+  final TextEditingController _textController4 = TextEditingController();
+  final TextEditingController _textController5 = TextEditingController();
+  final TextEditingController _textController6 = TextEditingController();
 
   Future<void> sendDatatoUrl() async {
-    final response = await http.get(
+    final response = await http.post(
       Uri.parse(
-          'http://prestige-car-assistance.ch/wp-json/myplugin/v1/save_form?name=$_textController1&phone=$_textController2&service=$_checkBoxValue1$_checkBoxValue2$_checkBoxValue3$_checkBoxValue4'),
+          'http://prestige-car-assistance.ch/wp-json/myplugin/v1/save_form?prenom=$_textController1&phone=$_textController2&service=$_checkBoxValue1$_checkBoxValue2$_checkBoxValue3$_checkBoxValue4&address=$_textController3&vehicle=$_textController4&cp=$_textController5&plaque=$_textController6'),
     );
 
     if (response.statusCode == 200) {
@@ -37,6 +41,10 @@ class _QuestionsState extends State<Questions> {
   void _submit() {
     String textValue1 = _textController1.text;
     String textValue2 = _textController2.text;
+    String textValue3 = _textController3.text;
+    String textValue4 = _textController4.text;
+    String textValue5 = _textController5.text;
+    String textValue6 = _textController6.text;
     List<String> selectedCheckboxes = [];
     if (_checkBoxValue1) selectedCheckboxes.add("Assurance Auto");
     if (_checkBoxValue2) selectedCheckboxes.add("Europe Assistance");
@@ -97,7 +105,7 @@ class _QuestionsState extends State<Questions> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Text(
-                          'Nom et prénom?',
+                          'Nom et prénom :',
                           style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -108,6 +116,62 @@ class _QuestionsState extends State<Questions> {
                         ),
                         TextFormField(
                           controller: _textController1,
+                        ),
+                        const SizedBox(height: 40),
+                        const Text(
+                          'Adresse :',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _textController3,
+                        ),
+                        const SizedBox(height: 40),
+                        const Text(
+                          'CP et lieu :',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _textController4,
+                        ),
+                        const SizedBox(height: 40),
+                        const Text(
+                          'Type de véhicule :',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _textController5,
+                        ),
+                        const SizedBox(height: 40),
+                        const Text(
+                          'N°plaque :',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: _textController6,
                         ),
                         const SizedBox(height: 40),
                         const Text(
