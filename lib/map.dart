@@ -2,11 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:open_whatsapp/open_whatsapp.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-String phone = '+441792137813';
+String phone = '+41792137813';
 
 void launchCall() async {
   String url = "tel:$phone";
